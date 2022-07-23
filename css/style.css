@@ -1,22 +1,24 @@
 body {
+    background-color: rgb(5, 16, 37);
     background-image: url('../img/pic.jpg'); 
+    background-size: cover;
+    background-repeat: no-repeat; 
     margin: auto;
     text-align: center;
-    font-family: arial,sans-serif;
+    font-family: Georgia, 'Times New Roman', Times, serif;
     font-weight: bold;
     color:rgb(35, 100, 100)
 }
 
 table {
-    background-color:rgb(150, 142, 142);
-    border: 2px solid #080404;
+    border: 2px solid #172561;
     text-align: center;
     margin: auto;
 }
 
 .cell {
-    width: 40px;
-    height: 40px;
+    width: 33px;
+    height: 33px;
 }
 
 .ground {
@@ -26,7 +28,6 @@ table {
 .modal {
     height: 80px;
     width: 220px;
-    background-color: rgb(120, 145, 192);
     text-align: center;
     margin-left: 50px;
     margin-top: 20px;
@@ -35,7 +36,7 @@ table {
 }
 
 button {
-    background-color: rgb(49, 103, 128);
+    background-color: rgb(73, 137, 167);
     border: 2px solid rgb(10, 85, 56);
     padding: 10px;
     margin-top: 20px;
@@ -46,5 +47,4 @@ button {
     display: flex;
     flex-direction: row;
     display: inline;
-    
 }

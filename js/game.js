@@ -1,13 +1,15 @@
 'use strict'
 
 const HERO = '♆'
-const ALIEN = '👽'
+const ALIEN1 = '👽'
+const ALIEN2 = '😈'
+const ALIEN3 = '👹'
 const LASER = '⤊'
 const SUPER_LASER  = '^'
 const SKY = 'SKY'
 const EARTH = 'EARTH'
-const BOARD_SIZE = 14
 
+var boardSize = 14
 var gAliensRowLength = 8
 var gAliensRowCount = 3
 
@@ -34,11 +36,11 @@ function init() {
 // use the functions: createCell, createHero, createAliens
 function createBoard() {
     const board = []
-    for (var i = 0; i < BOARD_SIZE; i++) {
+    for (var i = 0; i < boardSize; i++) {
         board.push([])
-        for (var j = 0; j < BOARD_SIZE; j++) {
+        for (var j = 0; j < boardSize; j++) {
             board[i][j] = createCell()
-            if (i >= BOARD_SIZE - 2) board[i][j].type = EARTH
+            if (i >= boardSize - 2) board[i][j].type = EARTH
         }      
     }
     createHero(board)
@@ -92,7 +94,7 @@ function restartScore() {
 
 function gameOverWon() {
     gGame.isOn = false
-    const elModal = document.querySelector('.modal')
+    var elModal = document.querySelector('.modal')
     elModal.style.display = 'block'
     var elModalWon = document.querySelector('.modal h3')
     elModalWon.innerText = 'Victory!'
@@ -100,25 +102,62 @@ function gameOverWon() {
 
 function gameOverLost () {
     gGame.isOn = false
-    const elModal = document.querySelector('.modal')
+    var elModal = document.querySelector('.modal')
     elModal.style.display = 'block'
     var elModalWon = document.querySelector('.modal h3')
     elModalWon.innerText = 'You lost, try again!'
 }
 
-function restartGame() {
+function restartGame(heroRowStart) {
     var elModal = document.querySelector('.modal')
     elModal.style.display = 'none'
     gGame.isOn = true
-    gHero.pos = { i:12, j: 5 }
+    gHero.pos = { i:heroRowStart, j: 5 }
+    gHero.superModeCount = 3
+    gAliensTopRowIdx = 0
+    gAliensBottomRowIdx = gAliensRowCount - 1
+    gIsAlienFreeze = false
+    gCanShiftRight = true
+    gCanShiftLeft = false
+    gCanShiftDown = false
+    clearInterval(gIntervalAliensRight)
+    clearInterval(gIntervalAliensLeft)
+    clearInterval(gIntervalAliensDown)
     init()
 }
 
 function hasInvadersGone() {
-    for (var i = 0; i < BOARD_SIZE; i++) {
-        for (var j = 0; j < BOARD_SIZE; j++) {
-            if (gBoard[i][j].gameObject === ALIEN) return false
+    for (var i = 0; i < boardSize; i++) {
+        for (var j = 0; j < boardSize; j++) {
+            if ((gBoard[i][j].gameObject === ALIEN1) ||
+                (gBoard[i][j].gameObject === ALIEN2) ||
+                (gBoard[i][j].gameObject === ALIEN3)) return false
         }      
     }
     return true
+}
+
+function level(level) {
+    switch (level) {
+        case 1:
+            gAliensRowLength = 8
+            alienSpeed = 500
+            boardSize = 14
+            restartGame(12)
+
+        break
+        case 2:
+            gAliensRowLength = 10
+            alienSpeed = 300
+            boardSize = 15
+            restartGame(13)
+        break    
+        case 3:
+            gAliensRowLength = 12
+            alienSpeed = 150
+            boardSize = 16
+            restartGame(14)
+        break
+        default:
+    }
 }

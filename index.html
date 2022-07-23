@@ -11,13 +11,19 @@
 
 <body onload="init()" onkeydown="onKeyDown(event)">
     <h1>Space Invaders</h1>
+    <button onclick="level(1)">Start</button>
+    <button class="freeze" onclick="freezeAliens()">Freeze aliens</button><br><br>
+    <div class="level">
+        <button onclick="level(1)">Easy</button>
+        <button onclick="level(2)">Normal</button>
+        <button onclick="level(3)">Hard</button>
+    </div>
     <h2>Score: <span>0</span></h2>
     <div class="board-container">
     </div>
-    <button class="freeze" onclick="freezeAliens()">Freeze aliens</button>
     <div class="modal">
         <h3></h3>
-        <button onclick="restartGame()">Restart</button>
+        <button onclick="level(1)">Restart</button>
     </div>
     <script src="js/util.js"></script>
     <script src="js/hero.js"></script>

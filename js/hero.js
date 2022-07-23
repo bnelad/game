@@ -27,13 +27,13 @@ function onKeyDown(ev) {
             shoot()
             break
         case 'n':
-                gHero.isShootNeighbors = true
-                shoot()
-                break
+            gHero.isShootNeighbors = true
+            shoot()
+            break
         case 'x':
-                gHero.isSuperShoot = (gHero.superModeCount === 0) ? false : true
-                if (gHero.isSuperShoot) shoot()
-                break
+            gHero.isSuperShoot = (gHero.superModeCount === 0) ? false : true
+            if (gHero.isSuperShoot) shoot()
+            break
         default:
     }
 }
@@ -67,7 +67,9 @@ function shoot() {
         if (laserPos.i === 0) return
         blinkLaser(laserPos)
         laserPos.i--
-        if (gBoard[laserPos.i][laserPos.j].gameObject === ALIEN) {
+        if ((gBoard[laserPos.i][laserPos.j].gameObject === ALIEN1) ||
+            (gBoard[laserPos.i][laserPos.j].gameObject === ALIEN2) ||
+            (gBoard[laserPos.i][laserPos.j].gameObject === ALIEN3)) {
             gGame.aliensCount++
             updateScore(10)
             if (gHero.isSuperShoot) {
@@ -81,16 +83,18 @@ function shoot() {
                 gHero.isShootNeighbors = false
             }
             if (gGame.aliensCount === gAliensRowLength * gAliensRowCount) {
-                console.log('Victory + score: ', gGame.score)
                 gGame.isOn = false
                 gameOverWon()
             }
-        } 
-        if (gBoard[laserPos.i][laserPos.j].gameObject === ALIEN || laserPos.i === 0) {
+        }
+        if ((gBoard[laserPos.i][laserPos.j].gameObject === ALIEN1) || (laserPos.i === 0) ||
+            (gBoard[laserPos.i][laserPos.j].gameObject === ALIEN2) ||
+            (gBoard[laserPos.i][laserPos.j].gameObject === ALIEN3)) {
             clearInterval(blinkInterval)
             updateCell(laserPos, '')
             gHero.isShoot = false
         }
+        if (hasInvadersGone()) gameOverWon()
     }, laserSpeed)
 }
 
@@ -110,7 +114,9 @@ function shootNeighbors(pos) {
         for (var j = pos.j - 1; j <= pos.j + 1; j++) {
             if (j < 0 || j > gBoard[i].length) continue
             if (i === pos.i && j === pos.j) continue
-            if (gBoard[i][j].gameObject === ALIEN) countAliens++
+            if (gBoard[i][j].gameObject === ALIEN1) countAliens++
+            if (gBoard[i][j].gameObject === ALIEN2) countAliens++
+            if (gBoard[i][j].gameObject === ALIEN3) countAliens++
             updateCell({ i, j })
         }
     }

@@ -1,6 +1,6 @@
 'use strict'
 
-var ALIEN_SPEED = 500
+var alienSpeed = 500
 var gIntervalAliensRight
 var gIntervalAliensLeft
 var gIntervalAliensDown
@@ -17,10 +17,10 @@ var gAliensTopRowIdx
 var gAliensBottomRowIdx
 
 function createAliens(board) {
-    for (var i = 0; i < gAliensRowCount; i++) {
-        for (var j = 0; j < gAliensRowLength; j++) {
-            board[i][j] = { type: SKY, gameObject: ALIEN }
-        }
+    for (var i = 0; i < gAliensRowLength; i++) {
+        board[0][i] = { type: SKY, gameObject: ALIEN1 }
+        board[1][i] = { type: SKY, gameObject: ALIEN2 }
+        board[2][i] = { type: SKY, gameObject: ALIEN3 }
     }
     gAliensTopRowIdx = 0
     gAliensBottomRowIdx = gAliensRowCount - 1
@@ -30,6 +30,7 @@ function handleAlienHit(pos) {
     if (gBoard[pos.i][pos.j].gameObject === LASER) {
         updateCell(pos, '')
         gGame.aliensCount++
+        if (hasInvadersGone()) gameOverWon()
     }
 }
 
@@ -41,7 +42,9 @@ function shiftBoardRight(board, fromI, toI) {
         for (var j = 0; j <= board[0].length - 1; j++) {
             board[i][j] = (j === 0) ? createCell() : oldBoard[i][j - 1]
             handleAlienHit({ i, j })
-            if (board[i][board[0].length - 1].gameObject === ALIEN) {
+            if ((board[i][board[0].length - 1].gameObject === ALIEN1) ||
+                (board[i][board[0].length - 1].gameObject === ALIEN2) ||
+                (board[i][board[0].length - 1].gameObject === ALIEN3)) {
                 clearInterval(gIntervalAliensRight)
                 gCanShiftRight = false
                 gCanShiftLeft = true
@@ -60,7 +63,10 @@ function shiftBoardLeft(board, fromI, toI) {
         for (var j = board[0].length - 1; j >= 0; j--) {
             board[i][j] = (j === board[0].length - 1) ? createCell() : oldBoard[i][j + 1]
             handleAlienHit({ i, j })
-            if (board[i][0].gameObject === ALIEN) {
+            if ((board[i][[0].length - 1].gameObject === ALIEN1) ||
+                (board[i][[0].length - 1].gameObject === ALIEN2) ||
+                (board[i][[0].length - 1].gameObject === ALIEN3)) {
+
                 gCanShiftLeft = false
                 gCanShiftRight = true
                 gCanShiftDown = true
@@ -97,15 +103,17 @@ function shiftBoardDown(board, fromI, toI) {
 function moveAliens() {
     if (gIsAlienFreeze) return
     if (!gGame.isOn) return
-    gIntervalAliensDown = setInterval(shiftBoardDown, ALIEN_SPEED, gBoard, gAliensTopRowIdx, gAliensBottomRowIdx)
-    gIntervalAliensRight = setInterval(shiftBoardRight, ALIEN_SPEED, gBoard, gAliensTopRowIdx, gAliensBottomRowIdx)
-    gIntervalAliensLeft = setInterval(shiftBoardLeft, ALIEN_SPEED, gBoard, gAliensTopRowIdx, gAliensBottomRowIdx)
+    gIntervalAliensDown = setInterval(shiftBoardDown, alienSpeed, gBoard, gAliensTopRowIdx, gAliensBottomRowIdx)
+    gIntervalAliensRight = setInterval(shiftBoardRight, alienSpeed, gBoard, gAliensTopRowIdx, gAliensBottomRowIdx)
+    gIntervalAliensLeft = setInterval(shiftBoardLeft, alienSpeed, gBoard, gAliensTopRowIdx, gAliensBottomRowIdx)
 }
 
 function isLost() {
     for (var i = gBoard.length - 2; i < gBoard.length - 1; i++) {
         for (var j = 0; j < gBoard[0].length; j++) {
-            if (gBoard[i][j].gameObject === ALIEN) {
+            if ((gBoard[i][j].gameObject === ALIEN1) ||
+                (gBoard[i][j].gameObject === ALIEN2) ||
+                (gBoard[i][j].gameObject === ALIEN3)) {
                 clearInterval(gIntervalAliensDown)
                 clearInterval(gIntervalAliensLeft)
                 clearInterval(gIntervalAliensRight)
